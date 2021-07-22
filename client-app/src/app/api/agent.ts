@@ -1,6 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { promises } from 'fs';
-import { useCallback } from 'react';
 import { Activity } from '../models/activity';
 
 const sleep = (delay: number) => {
