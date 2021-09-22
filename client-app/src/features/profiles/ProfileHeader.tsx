@@ -23,7 +23,7 @@ export default observer(function ProfileHeader({ profile }: Props) {
                 </Grid.Column>
                 <Grid.Column width={4}>
                     <Statistic.Group widths={2}>
-                        <Statistic label='Follwers' value='5' />
+                        <Statistic label='Followers' value='5' />
                         <Statistic label='Following' value='42' />
                     </Statistic.Group>
                     <Divider />
