@@ -2,7 +2,8 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { history } from '../..';
 import { Activity, ActivityFormValues } from '../models/activity';
-import { Photo, Profile } from '../models/profile';
+import { PaginatedResult } from '../models/pagination';
+import { Photo, Profile, UserActivity } from '../models/profile';
 import { User, UserFormValues } from '../models/user';
 import { store } from '../stores/store';
 
@@ -23,10 +24,14 @@ axios.interceptors.request.use(config => {
 
 axios.interceptors.response.use(async response => {
     await sleep(1000);
+    const pagination = response.headers['pagination'];
+    if (pagination) {
+        response.data = new PaginatedResult(response.data, JSON.parse(pagination));
+        return response as AxiosResponse<PaginatedResult<any>>
+    }
     return response;
 }, (error: AxiosError) => {
     const { data, status, config } = error.response!;
-
     switch (status) {
         case 400:
             if (typeof data === 'string') {
@@ -69,7 +74,8 @@ const request = {
 }
 
 const Activities = {
-    list: () => request.get<Activity[]>('/activities'),
+    list: (params: URLSearchParams) => axios.get<PaginatedResult<Activity[]>>('/activities', { params })
+        .then(responseBody),
     details: (id: string) => request.get<Activity>(`/activities/${id}`),
     create: (activity: ActivityFormValues) => request.post<void>(`/activities/`, activity),
     update: (activity: ActivityFormValues) => request.put<void>(`/activities/${activity.id}`, activity),
@@ -98,8 +104,12 @@ const Profiles = {
     deletePhoto: (id: string) => request.del(`/photos/${id}`),
     updateProfile: (profile: Partial<Profile>) => request.put(`/profiles`, profile),
     updateFollowing: (username: string) => request.post(`/follow/${username}`, {}),
-    listFollowings:(username: string, predicate: string) => 
-        request.get<Profile[]>(`/Follow/${username}?predicate=${predicate}`)
+    listFollowings: (username: string, predicate: string) =>
+        request.get<Profile[]>(`/Follow/${username}?predicate=${predicate}`),
+
+    listActivities: (username: string, predicate: string) =>
+        request.get<UserActivity[]>(`/profiles/${username}/activities?
+            predicate=${predicate}`)
 }
 
 
