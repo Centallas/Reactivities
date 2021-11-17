@@ -78,10 +78,10 @@ namespace API
             {
                 app.Use(async (context, next)=> 
                 {
-                   context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000")  
+                   context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000");  
                    //to call the next piece of middleware after we add our Header
                    await next.Invoke();
-                })
+                });
             }
 
             //app.UseHttpsRedirection();
