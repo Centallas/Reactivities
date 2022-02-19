@@ -53,16 +53,33 @@ namespace API
        
             app.UseXXssProtection(opt => opt.EnabledWithBlockMode());
             app.UseXfo(opt => opt.Deny());
-            app.UseCsp(opt => opt
-
-                
-                .BlockAllMixedContent()                
-                .StyleSources(s => s.Self().CustomSources("https://fonts.googleapis.com"))
-                .FontSources(s => s.Self().CustomSources("https://fonts.gstatic.com", "data:"))
+            app.UseCsp(opt => opt                
+                .BlockAllMixedContent()
+                .StyleSources(s => s.Self().CustomSources(
+                    "https://fonts.googleapis.com",
+                    "sha256-yChqzBduCCi4o4xdbXRXh4U/t1rP4UUUMJt+rB+ylUI="                   
+                ))
+                .FontSources(s => s.Self().CustomSources(
+                    "https://fonts.gstatic.com", "data:"
+                ))
                 .FormActions(s => s.Self())
                 .FrameAncestors(s => s.Self())
-                .ImageSources(s => s.Self().CustomSources("https://res.cloudinary.com"))                
-                .ScriptSources(s => s.Self().CustomSources("sha256-wVRXWUEfZlb+w20/SgFvOUbjKFu6/dc5mzuPLloyk4c="))
+                .ImageSources(s => s.Self().CustomSources(
+                    "https://res.cloudinary.com",
+                    "https://www.facebook.com",
+                    "https://platform-lookaside.fbsbx.com",
+                    "data:"
+                    ))
+                .ScriptSources(s => s.Self()
+                    .CustomSources(
+                      /*"sha256-wVRXWUEfZlb+w20/SgFvOUbjKFu6/dc5mzuPLloyk4c=",*/
+                        "sha256-wVRXWUEfZlb+w20/SgFvOUbjKFu6/dc5mzuPLloyk4c=",
+                        "https://connect.facebook.net",
+                        "sha256-JNYmorSMh6CRwKRsAP+707Grq/2GGFA7qLGk4vEmhdE="
+                        //,
+                        //"sha256-3x3EykMfFJtFd84iFKuZG0MoGAo5XdRfl3rq3r//ydA="
+                       
+                    ))
                 
             );
             
