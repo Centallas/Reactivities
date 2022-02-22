@@ -57,7 +57,8 @@ namespace API
                 .BlockAllMixedContent()
                 .StyleSources(s => s.Self().CustomSources(
                     "https://fonts.googleapis.com",
-                    "sha256-yChqzBduCCi4o4xdbXRXh4U/t1rP4UUUMJt+rB+ylUI="                   
+                    "sha256-yChqzBduCCi4o4xdbXRXh4U/t1rP4UUUMJt+rB+ylUI=",
+                    "sha256-rg9vBVGb4HCmLX9JXBEBSDVopOqpHsM1jQE1yCa1b64="                  
                 ))
                 .FontSources(s => s.Self().CustomSources(
                     "https://fonts.gstatic.com", "data:"
@@ -98,7 +99,7 @@ namespace API
                 });
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
